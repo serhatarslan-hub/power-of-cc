@@ -1,0 +1,16 @@
+cc=udp mtu=1500 energy_uJ=927770757
+cc=udp mtu=9000 energy_uJ=455972160
+cc=reno mtu=1500 energy_uJ=428159793
+cc=reno mtu=9000 energy_uJ=371826685
+cc=cubic mtu=1500 energy_uJ=391805089
+cc=cubic mtu=9000 energy_uJ=374365129
+cc=dctcp mtu=1500 energy_uJ=426906072
+cc=dctcp mtu=9000 energy_uJ=334443481
+cc=bbr2 mtu=1500 energy_uJ=493762653
+cc=bbr2 mtu=9000 energy_uJ=378491279
+cc=bbr mtu=1500 energy_uJ=361563528
+cc=bbr mtu=9000 energy_uJ=324968529
+cc=vegas mtu=1500 energy_uJ=444010155
+cc=vegas mtu=9000 energy_uJ=338924608
+cc=none mtu=1500 energy_uJ=453244445
+cc=none mtu=9000 energy_uJ=405836607

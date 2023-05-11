@@ -1,9 +1,9 @@
 #!/bin/bash
 
-REPEAT_CNT=10
+REPEAT_CNT=20
 IPERF_DST="10.0.0.1"
 IPERF_IFACE="bond0"
-IPERF_SIZE="10G"
+IPERF_SIZE="50G"
 MTU_SIZES=("1500" "9000")
 
 # Determine the experiment ID

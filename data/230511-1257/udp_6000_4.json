@@ -1,0 +1,97 @@
+{
+	"start":	{
+		"connected":	[{
+				"socket":	5,
+				"local_host":	"10.0.1.1",
+				"local_port":	41096,
+				"remote_host":	"10.0.0.1",
+				"remote_port":	5201
+			}],
+		"version":	"iperf 3.9+",
+		"system_info":	"Linux han-3 5.10.0 #9 SMP PREEMPT Tue Feb 23 15:01:43 PST 2021 x86_64",
+		"timestamp":	{
+			"time":	"Thu, 11 May 2023 20:55:10 GMT",
+			"timesecs":	1683838510
+		},
+		"connecting_to":	{
+			"host":	"10.0.0.1",
+			"port":	5201
+		},
+		"cookie":	"ymysk3etfxfhnafwirra5r42qxa3taxwe2ds",
+		"sock_bufsize":	0,
+		"sndbuf_actual":	212992,
+		"rcvbuf_actual":	212992,
+		"test_start":	{
+			"protocol":	"UDP",
+			"num_streams":	1,
+			"blksize":	5948,
+			"omit":	0,
+			"duration":	0,
+			"bytes":	53687091200,
+			"blocks":	0,
+			"reverse":	0,
+			"tos":	0
+		}
+	},
+	"intervals":	[{
+			"streams":	[{
+					"socket":	5,
+					"start":	0,
+					"end":	58.234632,
+					"seconds":	58.2346305847168,
+					"bytes":	53687094100,
+					"bits_per_second":	7375280799.20057,
+					"packets":	9026075,
+					"omitted":	false,
+					"sender":	true
+				}],
+			"sum":	{
+				"start":	0,
+				"end":	58.234632,
+				"seconds":	58.2346305847168,
+				"bytes":	53687094100,
+				"bits_per_second":	7375280799.20057,
+				"packets":	9026075,
+				"omitted":	false,
+				"sender":	true
+			}
+		}],
+	"end":	{
+		"streams":	[{
+				"udp":	{
+					"socket":	5,
+					"start":	0,
+					"end":	58.234632,
+					"seconds":	58.234632,
+					"bytes":	53687094100,
+					"bits_per_second":	7375280619.95824,
+					"jitter_ms":	0.00781624389878154,
+					"lost_packets":	14996,
+					"packets":	9026075,
+					"lost_percent":	0.16614087518661211,
+					"out_of_order":	0,
+					"sender":	true
+				}
+			}],
+		"sum":	{
+			"start":	0,
+			"end":	58.234676,
+			"seconds":	58.234676,
+			"bytes":	53687094100,
+			"bits_per_second":	7375280619.95824,
+			"jitter_ms":	0.00781624389878154,
+			"lost_packets":	14996,
+			"packets":	9026075,
+			"lost_percent":	0.16614087518661211,
+			"sender":	true
+		},
+		"cpu_utilization_percent":	{
+			"host_total":	56.347042622455824,
+			"host_user":	11.18078996206931,
+			"host_system":	45.166250943218778,
+			"remote_total":	56.6156997432637,
+			"remote_user":	16.156446658370164,
+			"remote_system":	40.459234211009
+		}
+	}
+}

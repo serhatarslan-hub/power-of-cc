@@ -8,11 +8,11 @@ MTU_SIZE=1500
 # Determine the experiment ID
 EXP_ID=( $(date +"%y%m%d-%H%M") )
 EXP_DIR="./data/$EXP_ID" 
-# if [ ! -d "$EXP_DIR" ]; then
-#     mkdir $EXP_DIR
-# else
-#     echo "The data directory for this experiment already exists!"
-# fi
+if [ ! -d "$EXP_DIR" ]; then
+    mkdir $EXP_DIR
+else
+    echo "The data directory for this experiment already exists!"
+fi
 ENERGY_FILE=$EXP_DIR"/energy.log"
 
 sudo sysctl -w net.ipv4.tcp_congestion_control=cubic

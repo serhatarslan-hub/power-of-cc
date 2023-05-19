@@ -48,6 +48,8 @@ def read_iperf_log(df, data_folder):
         max_cwnd = np.nan
         
         json_filename = data_folder + row['cc'] + '_' + str(row['mtu']) + '_' 
+        if ('bitrate' in row.keys()):
+            json_filename += str(int(row['bitrate'])) + '_'
         if ('duration' in row.keys()):
             json_filename += str(int(row['duration'])) + '_'
             time = row['duration']

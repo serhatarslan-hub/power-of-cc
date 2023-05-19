@@ -3,6 +3,9 @@
 REPEAT_CNT=20
 IPERF_DST="10.0.0.1"
 IPERF_IFACE="bond0"
+IPERF_SIZE="50G"
+BITRATES=("1G" "5G" "10G")
+N_CORES=("8" "16" "24")
 MTU_SIZE=1500
 
 # Determine the experiment ID
@@ -27,22 +30,39 @@ for ((T=10; T<=100; T+=10)); do
         NRG_0=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj)-NRG_0))
         NRG_1=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj)-NRG_1))
         NRG=$((NRG_0+NRG_1))
-        echo "cc=sleep mtu=$MTU_SIZE duration=$T cnt=$CNT energy_uJ=${NRG}" >> $ENERGY_FILE
+        echo "cc=stress mtu=$MTU_SIZE bitrate=0 n_core=0 duration=$T cnt=$CNT energy_uJ=${NRG}" >> $ENERGY_FILE
+    done
+done
+
+# Measure the energy consumption when background processes are running on the machine
+for N_CORE in ${N_CORES[@]}; do
+    for ((T=10; T<=100; T+=10)); do
+        for CNT in $(seq $REPEAT_CNT); do
+            NRG_0=( $(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj))
+            NRG_1=( $(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj))
+            stress --vm $N_CORE -t $T
+            NRG_0=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj)-NRG_0))
+            NRG_1=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj)-NRG_1))
+            NRG=$((NRG_0+NRG_1))
+            echo "cc=stress mtu=$MTU_SIZE bitrate=0 n_core=$N_CORE duration=$T cnt=$CNT energy_uJ=${NRG}" >> $ENERGY_FILE
+        done
     done
 done
 
 # Compare Cubic's energy consumption for different flow completion times to see
 # if it proportionally grows with the flow completion time
-for ((T=10; T<=100; T+=10)); do
-    for CNT in $(seq $REPEAT_CNT); do
-        JSON_FILE=$EXP_DIR"/cubic_${MTU_SIZE}_${T}_${CNT}.json"
-        NRG_0=( $(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj))
-        NRG_1=( $(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj))
-        iperf3 -c $IPERF_DST -t $T -i 60 --json > $JSON_FILE
-        NRG_0=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj)-NRG_0))
-        NRG_1=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj)-NRG_1))
-        NRG=$((NRG_0+NRG_1))
-        echo "cc=cubic mtu=$MTU_SIZE duration=$T cnt=$CNT energy_uJ=${NRG}" >> $ENERGY_FILE
+for BITRATE in ${BITRATES[@]}; do
+    for ((T=10; T<=100; T+=10)); do
+        for CNT in $(seq $REPEAT_CNT); do
+            JSON_FILE=$EXP_DIR"/cubic_${MTU_SIZE}_${BITRATE}_${T}_${CNT}.json"
+            NRG_0=( $(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj))
+            NRG_1=( $(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj))
+            iperf3 -c $IPERF_DST -b $BITRATE -t $T -i 60 --json > $JSON_FILE
+            NRG_0=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj)-NRG_0))
+            NRG_1=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj)-NRG_1))
+            NRG=$((NRG_0+NRG_1))
+            echo "cc=cubic mtu=$MTU_SIZE bitrate=$BITRATE n_core=0 duration=$T cnt=$CNT energy_uJ=${NRG}" >> $ENERGY_FILE
+        done
     done
 done
 

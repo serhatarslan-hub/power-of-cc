@@ -4,7 +4,7 @@ REPEAT_CNT=20
 IPERF_DST="10.0.0.1"
 IPERF_IFACE="bond0"
 IPERF_SIZE="50G"
-BITRATES=("1G" "5G" "10G")
+BITRATES=("1" "5" "10")
 N_CORES=("8" "16" "24")
 MTU_SIZE=1500
 
@@ -57,7 +57,7 @@ for BITRATE in ${BITRATES[@]}; do
             JSON_FILE=$EXP_DIR"/cubic_${MTU_SIZE}_${BITRATE}_${T}_${CNT}.json"
             NRG_0=( $(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj))
             NRG_1=( $(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj))
-            iperf3 -c $IPERF_DST -b $BITRATE -t $T -i 60 --json > $JSON_FILE
+            iperf3 -c $IPERF_DST -b ${BITRATE}G -t $T -i 60 --json > $JSON_FILE
             NRG_0=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj)-NRG_0))
             NRG_1=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj)-NRG_1))
             NRG=$((NRG_0+NRG_1))

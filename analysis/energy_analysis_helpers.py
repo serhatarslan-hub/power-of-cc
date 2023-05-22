@@ -12,7 +12,7 @@ def read_energy_log(exp_filename):
                 key, val = item.split('=')
                 if key in ['energy_uJ', 'duration']:
                     val = float(val)
-                elif key in ['mtu']:
+                elif key in ['mtu', 'bitrate', 'n_core']:
                     val = int(val)
                 exp[key] = val
             if val > 0:
@@ -49,7 +49,7 @@ def read_iperf_log(df, data_folder):
         
         json_filename = data_folder + row['cc'] + '_' + str(row['mtu']) + '_' 
         if ('bitrate' in row.keys()):
-            json_filename += str(int(row['bitrate'])) + '_'
+            json_filename += str(row['bitrate']) + 'G_'
         if ('duration' in row.keys()):
             json_filename += str(int(row['duration'])) + '_'
             time = row['duration']

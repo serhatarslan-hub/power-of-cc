@@ -49,7 +49,7 @@ def read_iperf_log(df, data_folder):
         
         json_filename = data_folder + row['cc'] + '_' + str(row['mtu']) + '_' 
         if ('bitrate' in row.keys()):
-            json_filename += str(row['bitrate']) + 'G_'
+            json_filename += str(row['bitrate']) + '_'
         if ('duration' in row.keys()):
             json_filename += str(int(row['duration'])) + '_'
             time = row['duration']
@@ -74,6 +74,8 @@ def read_iperf_log(df, data_folder):
                 time = iperf_data['end'][sum_str]['seconds']
                 sent = iperf_data['end'][sum_str]['bytes']
                 thp = iperf_data['end'][sum_str]['bits_per_second']
+        elif (row['cc'] not in ['sleep', 'stress']):
+            print("{} doesn't exist!".format(json_filename))
 
         total_cpu_util_percent.append(total_cpu_util)
         user_cpu_util_percent.append(user_cpu_util)

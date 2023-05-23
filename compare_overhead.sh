@@ -1,12 +1,12 @@
 #!/bin/bash
 
-REPEAT_CNT=20
+REPEAT_CNT=10
 IPERF_DST="10.0.0.1"
 IPERF_IFACE="bond0"
 IPERF_SIZE="50G"
-BITRATES=("1" "5" "10")
+BITRATES=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10")
 N_CORES=("8" "16" "24")
-MTU_SIZE=1500
+MTU_SIZE=9000
 
 # Determine the experiment ID
 EXP_ID=( $(date +"%y%m%d-%H%M") )

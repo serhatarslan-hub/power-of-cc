@@ -49,6 +49,27 @@ for N_CORE in ${N_CORES[@]}; do
     done
 done
 
+# Measure the energy consumption when background processes and iperf are 
+# simultaneously running on the machine
+for N_CORE in ${N_CORES[@]}; do
+    for BITRATE in ${BITRATES[@]}; do
+        for ((T=10; T<=100; T+=10)); do
+            for CNT in $(seq $REPEAT_CNT); do
+                JSON_FILE=$EXP_DIR"/cubic_${MTU_SIZE}_${BITRATE}_${T}_${CNT}_${N_CORE}.json"
+                NRG_0=( $(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj))
+                NRG_1=( $(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj))
+                stress --vm $N_CORE -t $T &
+                iperf3 -c $IPERF_DST -b ${BITRATE}G -t $T -i 60 --json > $JSON_FILE
+                wait
+                NRG_0=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:0/energy_uj)-NRG_0))
+                NRG_1=$(($(sudo cat /sys/class/powercap/intel-rapl/intel-rapl\:1/energy_uj)-NRG_1))
+                NRG=$((NRG_0+NRG_1))
+                echo "cc=cubic mtu=$MTU_SIZE bitrate=$BITRATE n_core=$N_CORE duration=$T cnt=$CNT energy_uJ=${NRG}" >> $ENERGY_FILE
+            done
+        done
+    done
+done
+
 # Compare Cubic's energy consumption for different flow completion times to see
 # if it proportionally grows with the flow completion time
 for BITRATE in ${BITRATES[@]}; do

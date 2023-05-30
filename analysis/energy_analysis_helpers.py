@@ -53,7 +53,11 @@ def read_iperf_log(df, data_folder):
         if ('duration' in row.keys()):
             json_filename += str(int(row['duration'])) + '_'
             time = row['duration']
-        json_filename += row['cnt'] + '.json'
+        json_filename += row['cnt']
+        # if ('n_core' in row.keys() and row['n_core'] != 0):
+        if ('n_core' in row.keys()):
+            json_filename += '_' + str(int(row['n_core']))
+        json_filename += '.json'
 
         if (os.path.isfile(json_filename)):
             with open(json_filename, 'r') as f:

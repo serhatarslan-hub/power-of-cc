@@ -2,6 +2,16 @@ import pandas as pd
 import numpy as np
 import json
 import os.path
+import matplotlib.colors as mcolors
+
+def get_next_color(index):
+    all_colors = mcolors.TABLEAU_COLORS
+    color_names = list(all_colors.keys())
+    num_colors = len(color_names)
+    color_index = index % num_colors
+    color_name = color_names[color_index]
+    color_value = all_colors[color_name]
+    return color_value
 
 def read_energy_log(exp_filename):
     data = []

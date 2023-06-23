@@ -24,6 +24,8 @@ def read_energy_log(exp_filename):
                     val = float(val)
                 elif key in ['mtu', 'bitrate', 'n_core']:
                     val = int(val)
+                if (key=='cc' and val=='none'):
+                    val = 'baseline' # Using a better name for our custom module
                 exp[key] = val
             if val > 0:
                 data.append(exp)
@@ -57,6 +59,8 @@ def read_iperf_log(df, data_folder):
         max_rtt = np.nan
         max_cwnd = np.nan
         
+        if (row['cc'] == 'baseline'):
+            row['cc'] = 'none' # Revert to the original module name to get iperf data
         json_filename = data_folder + row['cc'] + '_' + str(row['mtu']) + '_' 
         if ('bitrate' in row.keys()):
             json_filename += str(row['bitrate']) + '_'
